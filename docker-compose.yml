@@ -1,0 +1,33 @@
+version: '3.0'
+
+services:
+  api:
+    image: jea-api
+    restart: always
+    ports:
+      - 9090:9090
+    environment:
+        PORT: 9090
+        GIN_MODE: release
+        DATABASE_HOST: postgres
+        DATABASE_PORT: 5432
+        DATABASE_DATABASE: postgres
+        DATABASE_USER: postgres
+        DATABASE_PASSWORD: super
+    depends_on:
+      - postgres
+    networks:
+      - api
+  postgres:
+    image: library/postgres:12-alpine
+    restart: always
+    volumes:
+    - ./postgres_data:/var/lib/postgresql/data
+    ports:
+    - 5431:5432
+    environment:
+      - POSTGRES_PASSWORD=super
+    networks:
+      - api
+networks:
+  api:

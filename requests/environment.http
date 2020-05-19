@@ -1,0 +1,32 @@
+GET http://localhost:8080/api/environment
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/api/environment/2
+Content-Type: application/json
+
+###
+
+POST http://localhost:8080/api/environment
+Accept: */*
+Content-Type: application/json
+
+{
+    "eid":"nog",
+    "client": {
+        "id": 1
+    }
+}
+###
+
+POST http://localhost:8080/api/environment/2/create
+Accept: */*
+Content-Type: application/json
+
+{
+    "name": "VitorEmanoel",
+    "username": "VitorEmanoel",
+    "password": "25691491"
+}
+###

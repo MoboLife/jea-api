@@ -1,0 +1,46 @@
+GET http://localhost:8080/api/sale
+Accept: */*
+
+###
+
+GET http://localhost:8080/api/sale/4
+Accept: */*
+
+###
+
+GET http://localhost:8080/api/sale/4/products
+Accept: */*
+
+###
+
+POST http://localhost:8080/api/sale/
+Accept: */*
+Content-Type: application/json
+
+{
+    "purchaser": {
+        "id": 1
+    },
+    "products": [
+        {
+            "id": 1
+        }
+    ],
+    "total": 30
+}
+
+###
+
+PUT http://localhost:8080/api/sale/4
+Accept: */*
+Content-Type: application/json
+
+{
+    "id": 4,
+    "products": [
+        {
+            "id": 2
+        }
+    ]
+}
+###

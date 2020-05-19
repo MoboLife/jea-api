@@ -1,0 +1,21 @@
+GET http://localhost:8080/api/product
+Accept: */*
+
+###
+
+GET http://localhost:8080/api/product/3
+Accept: */*
+
+###
+
+POST http://localhost:8080/api/product/
+Accept: */*
+Content-Type: application/json
+
+{"description":  "Copo", "price": 200}
+###
+
+DELETE http://localhost:8080/api/product/2
+Accept: */*
+
+###

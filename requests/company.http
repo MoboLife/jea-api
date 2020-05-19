@@ -1,0 +1,9 @@
+GET http://localhost:8080/api/company/
+Accept: */*
+
+###
+
+GET http://localhost:8080/api/company/1
+Accept: */*
+
+###

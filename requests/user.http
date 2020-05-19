@@ -1,0 +1,36 @@
+GET http://localhost:9090/api/users
+Accept: */*
+
+###
+
+GET http://localhost:9090/api/profile
+Accept: */*
+
+###
+
+GET http://localhost:8080/api/users/1
+Accept: */*
+
+###
+
+POST http://localhost:8080/api/login
+Accept: */*
+Content-Type: application/json
+
+{
+    "username": "vitoremanoel",
+    "password": "25691491"
+}
+
+###
+
+POST http://localhost:8080/api/users
+Accept: */*
+Content-Type: application/json
+
+{
+    "username": "joao",
+    "password": "25691491",
+    "name": "Joao Amorim"
+}
+###
