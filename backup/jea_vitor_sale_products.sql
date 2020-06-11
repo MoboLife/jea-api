@@ -1,0 +1,1 @@
+INSERT INTO vitor.sale_products (id, created_at, updated_at, sale_id, product_id, quantity, increase, discount) VALUES (1, '2020-06-09 21:18:12.379000', null, 1, 1, 10, null, null);

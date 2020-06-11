@@ -36,7 +36,15 @@ func (g *GinControllerContext) FindAll(options ...repository.Options) func(ctx *
 			ctx.Status(400)
 			return
 		}
-		ctx.JSON(200, items)
+		total, err := g.Repository.Total()
+		if err != nil {
+			ctx.Status(400)
+			return
+		}
+		ctx.JSON(200, FindAllResponse{
+			Items: items,
+			Total: total,
+		})
 	}
 }
 
@@ -133,4 +141,9 @@ func NewGinController(model interface{}) GinController {
 		modelType = modelType.Elem()
 	}
 	return &GinControllerContext{ModelType:  modelType, Model: model}
+}
+
+type FindAllResponse struct {
+	Items	interface{}		`json:"items"`
+	Total	int64			`json:"total"`
 }

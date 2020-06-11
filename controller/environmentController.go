@@ -10,6 +10,7 @@ import (
 type EnvironmentController interface {
 	Create(eid string) error
 	Delete(eid string) error
+	Update(eid string) error
 	Exists(eid string) bool
 }
 
@@ -39,6 +40,17 @@ func (e *EnvironmentControllerContext) Delete(eid string) error {
 		if err != nil {
 			return err
 		}
+		return nil
+	})
+}
+
+func (e *EnvironmentControllerContext) Update(eid string) error {
+	return e.DB.Transaction(func(tx *gorm.DB) error {
+		if !e.Exists(eid) {
+			return errors.New("this schema not exists")
+		}
+		database := environment.UseEnvironment(eid, e.DB)
+		environment.MigrateTables(database, environment.GetStructure(environment.ERP).Models...)
 		return nil
 	})
 }

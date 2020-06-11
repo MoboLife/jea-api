@@ -11,6 +11,7 @@ type Repository interface {
 	Create(entity interface{}, options ...Options) error
 	Delete(id int64, options ...Options) error
 	Update(entity interface{}, id int64, options ...Options) error
+	Total() (int64, error)
 }
 
 type RepositoryContext struct {
@@ -27,6 +28,16 @@ func (r *RepositoryContext) FindAll(options ...Options) (interface{}, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+func (r *RepositoryContext) Total() (int64, error) {
+	var total int64
+	err := r.DB.Model(r.Model).Count(&total).Error
+	if err != nil {
+		return 0, err
+	}
+	return total, nil
+
 }
 
 func (r *RepositoryContext) Find(id int64, options ...Options) (interface{}, error) {

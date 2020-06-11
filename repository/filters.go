@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -32,6 +33,31 @@ func LimitFilter() Filter {
 			options = append(options, WithLimit(int(limit)))
 		}
 		return options
+	}}
+}
+
+func OrderingFilter() Filter{
+	return &APIFilter{ApplyFunc: func(ctx *gin.Context) []Options {
+		orderStr := ctx.Query("order")
+		var orderValue = "id"
+		var orderType = "asc"
+		var customType = false
+		if len(orderStr) == 0{
+			return []Options{WithOrder(fmt.Sprintf("%s %s", orderValue, orderType))}
+		}
+		if orderStr[0] == '+'{
+			orderType = "asc"
+			customType = true
+		}
+		if orderStr[0] == '-'{
+			orderType = "desc"
+			customType = true
+		}
+		orderValue = orderStr
+		if customType {
+			orderValue = orderStr[1:]
+		}
+		return []Options{WithOrder(fmt.Sprintf("%s %s", orderValue, orderType))}
 	}}
 }
 

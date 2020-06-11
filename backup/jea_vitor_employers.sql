@@ -1,0 +1,2 @@
+INSERT INTO vitor.employers (id, created_at, updated_at, name) VALUES (1, '2020-06-10 06:33:40.369000', null, 'Vitor Emanoel');
+INSERT INTO vitor.employers (id, created_at, updated_at, name) VALUES (2, '2020-06-10 06:33:48.431000', null, 'Luana');

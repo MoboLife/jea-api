@@ -25,7 +25,7 @@ func NewGinControllerWrapper(routerGroup *gin.RouterGroup, ginController GinCont
 	}
 	routerGroup.GET("", func(ctx *gin.Context) {
 		var options = methodOptions.FindAll
-		options = append(options, repository.WithFilters(ctx, repository.LimitAndPageFilter()))
+		options = append(options, repository.WithFilters(ctx, repository.LimitAndPageFilter(), repository.OrderingFilter()))
 		ginController.FindAll(options...)(ctx)
 	})
 	routerGroup.GET("/:id", ginController.Find(methodOptions.Find...))

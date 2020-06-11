@@ -45,7 +45,7 @@ func (e *EnvironmentAPI) createEnvironment(c *gin.Context) {
 	env := item.(*models.Environment)
 	err = e.EnvironmentController.Create(env.EID)
 	if err != nil {
-		c.JSON(400, common.JSON{"message":"Error in create environment"})
+		c.JSON(400, common.JSON{"message":"Error in create environment", "error": err.Error()})
 		return
 	}
 	env.Created = true
@@ -63,6 +63,27 @@ func (e *EnvironmentAPI) createEnvironment(c *gin.Context) {
 	c.Status(201)
 }
 
+func (e *EnvironmentAPI) updateEnvironment(ctx *gin.Context) {
+	var idStr = ctx.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		ctx.Status(400)
+		return
+	}
+	item, err := e.EnvironmentRepository.Find(id)
+	if err != nil {
+		ctx.Status(404)
+		return
+	}
+	env := item.(*models.Environment)
+	err = e.EnvironmentController.Update(env.EID)
+	if err != nil {
+		ctx.JSON(400, common.JSON{"message":"Error in create environment", "error": err.Error()})
+		return
+	}
+	ctx.Status(200)
+}
+
 func NewEnvironment(group *gin.RouterGroup) {
 	var environmentAPI = EnvironmentAPI{}
 	var routerGroup = group.Group("/environment")
@@ -71,5 +92,6 @@ func NewEnvironment(group *gin.RouterGroup) {
 		controller.NewGinControllerWrapper(routerGroup, ginController, true)
 		routerGroup.Use(environmentAPI.setupRepository)
 		routerGroup.POST("/:id/create", environmentAPI.createEnvironment)
+		routerGroup.POST("/:id/update", environmentAPI.updateEnvironment)
 	}
 }

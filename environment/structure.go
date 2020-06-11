@@ -36,15 +36,31 @@ var structures = map[StructureType]StructureConfig{
 		StructureType: ERP,
 		Models:        []interface{}{
 			&models.Client{},
+			&models.Employer{},
 			&models.Company{},
+			&models.SaleProduct{},
 			&models.Group{},
 			&models.Product{},
 			&models.Sale{},
 			&models.User{},
+			&models.AccountPayable{},
+			&models.AccountReceivable{},
 		},
 		Private:       false,
 		Tenancy:       true,
 	},
+}
+
+func MigrateTables(db *gorm.DB, tables ...interface{}) error {
+	for _, table := range tables{
+		if !db.HasTable(table) {
+			err := db.Create(table).Error
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func GetStructure(structureType StructureType) StructureConfig {

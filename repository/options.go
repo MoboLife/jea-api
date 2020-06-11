@@ -67,3 +67,11 @@ func WithOffset(offset int) Options {
 		return database
 	}}
 }
+
+func WithOrder(order string) Options {
+	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
+		var database = db
+		database = database.Order(order)
+		return database
+	}}
+}
