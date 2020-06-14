@@ -8,6 +8,7 @@ import (
 func NewAPI(engine *gin.Engine) {
 	apiGroup := engine.Group("/api")
 	{
+		NewHealthAPI(apiGroup)
 		modules.Build(apiGroup, Modules{})
 		NewProfile(apiGroup)
 		NewSale(apiGroup)
