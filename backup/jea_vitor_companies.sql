@@ -1,2 +1,0 @@
-INSERT INTO vitor.companies (id, created_at, updated_at, name, cnpj, city) VALUES (1, '2020-06-08 07:41:20.833000', null, 'MoboLife', '0000', 'Chapéco - SC');
-INSERT INTO vitor.companies (id, created_at, updated_at, name, cnpj, city) VALUES (2, '2020-06-03 13:54:53.726804', '2020-06-03 13:54:53.726804', 'MoboLife', '0000', 'Florianopolis - SC');

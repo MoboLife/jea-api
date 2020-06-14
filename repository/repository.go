@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"jea-api/database"
 	"reflect"
 )
 
@@ -91,4 +93,12 @@ func NewRepository(model interface{}, db *gorm.DB) Repository {
 		modelType = modelType.Elem()
 	}
 	return &RepositoryContext{DB: db.Model(model), Model: model, ModelType: modelType}
+}
+
+func UseRepository(model interface{}, repository *Repository) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		if repository == nil {
+			*repository = NewRepository(model, database.GetDatabase(c))
+		}
+	}
 }

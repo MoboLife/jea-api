@@ -26,6 +26,8 @@ var structures = map[StructureType]StructureConfig{
 		Models:        []interface{}{
 			&models.Group{},
 			&models.User{},
+			&models.Session{},
+			&models.SessionAccess{},
 			&models.Client{},
 			&models.Environment{},
 		},
@@ -43,6 +45,8 @@ var structures = map[StructureType]StructureConfig{
 			&models.Product{},
 			&models.Sale{},
 			&models.User{},
+			&models.Session{},
+			&models.SessionAccess{},
 			&models.AccountPayable{},
 			&models.AccountReceivable{},
 		},

@@ -86,7 +86,7 @@ func (g *GinControllerContext) Create(options ...repository.Options) func(ctx *g
 			ctx.Status(400)
 			return
 		}
-		ctx.Status(201)
+		ctx.JSON(201, entity)
 	}
 }
 
@@ -127,7 +127,7 @@ func (g *GinControllerContext) Update(options ...repository.Options) func(ctx *g
 			ctx.Status(400)
 			return
 		}
-		ctx.Status(200)
+		ctx.JSON(200, entity)
 	}
 }
 

@@ -7,7 +7,7 @@ type Sale struct {
 	Purchaser		*Client			`json:"purchaser,omitempty" gorm:"foreignkey:PurchaserId;association_foreignkey:ID;association_autoupdate:false;association_autocreate:false"`
 	PurchaserId		int32			`json:"-"`
 	Status			int				`json:"status"`
-	Products		[]*SaleProduct	`json:"products,omitempty" gorm:"foreignkey:SaleId;association_foreignkey:ID;association_autoupdate:false;association_autocreate:false"`
+	Products		[]*SaleProduct	`json:"products,omitempty" gorm:"foreignkey:SaleId;association_foreignkey:ID;association_autoupdate:false;association_autocreate:true"`
 	CompanyId		int64			`json:"-"`
 	Company			*Company		`json:"company,omitempty" gorm:"foreignkey:CompanyId;association_foreignkey:ID;association_autoupdate:false;association_autocreate:false"`
 	SellerId		int64			`json:"-"`

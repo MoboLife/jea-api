@@ -42,5 +42,6 @@ func AuthCheckMiddleware(c *gin.Context) {
 		c.Abort()
 		return
 	}
+	c.Set("token", token)
 	permissions.PermissionMiddleware(token.Claims, c)
 }

@@ -1,1 +1,0 @@
-INSERT INTO vitor.products (id, created_at, updated_at, description, price) VALUES (1, '2020-06-03 13:54:53.777809', '2020-06-03 13:54:53.777809', 'Assinatura ERP Premium', 250);
