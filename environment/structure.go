@@ -48,6 +48,8 @@ var structures = map[StructureType]StructureConfig{
 			&models.SaleProduct{},
 			&models.Group{},
 			&models.Product{},
+			&models.PurchaseProduct{},
+			&models.Purchase{},
 			&models.Sale{},
 			&models.User{},
 			&models.Session{},

@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/environment
+GET http://localhost:9090/api/environments
 Content-Type: application/json
 
 ###

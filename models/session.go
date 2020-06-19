@@ -23,9 +23,9 @@ var (
 // Session model
 type Session struct {
 	ID       int64            `json:"id" gorm:"primary_key"`
-	User     *User            `json:"user,omitempty" gorm:"foreignkey:UserId;association_foreignkey:ID;association_autoupdate:false;association_autocreate:false"`
+	User     *User            `json:"user,omitempty" gorm:"foreignkey:UserID;association_foreignkey:ID;association_autoupdate:false;association_autocreate:false"`
 	UserID   int64            `json:"-"`
-	Access   []*SessionAccess `json:"access" gorm:"foreignkey:SessionId;association_foreignkey:ID;association_autoupdate:false;association_autocreate:true"`
+	Access   []*SessionAccess `json:"access" gorm:"foreignkey:SessionID;association_foreignkey:ID;association_autoupdate:false;association_autocreate:true"`
 	Token    string           `json:"-"`
 	Model    string           `json:"model"`
 	DeviceID string           `json:"deviceId"`
