@@ -1,6 +1,7 @@
 package models
 
+// Employer model
 type Employer struct {
 	Model
-	Name		string		`json:"name"`
+	Name string `json:"name"`
 }

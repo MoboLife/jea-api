@@ -1,8 +1,9 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/common"
+
+	"github.com/gin-gonic/gin"
 )
 
 func health(c *gin.Context) {
@@ -11,6 +12,7 @@ func health(c *gin.Context) {
 	})
 }
 
+// NewHealthAPI create health for API
 func NewHealthAPI(router *gin.RouterGroup) {
 	var api = router.Group("/health")
 	{

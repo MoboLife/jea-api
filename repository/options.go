@@ -5,18 +5,22 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Options base options for apply mutable data in database connection
 type Options interface {
 	Apply(db *gorm.DB) *gorm.DB
 }
 
+// DatabaseOptions database options builder
 type DatabaseOptions struct {
 	ApplyFunc func(db *gorm.DB) *gorm.DB
 }
 
+// Apply apply database customization
 func (d *DatabaseOptions) Apply(db *gorm.DB) *gorm.DB {
 	return d.ApplyFunc(db)
 }
 
+// WithPreloads add preload in database connection
 func WithPreloads(preloads ...string) Options {
 	return &DatabaseOptions{
 		ApplyFunc: func(db *gorm.DB) *gorm.DB {
@@ -29,6 +33,7 @@ func WithPreloads(preloads ...string) Options {
 	}
 }
 
+// WithLimit apply limit for database query
 func WithLimit(limit int) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
 		var database = db
@@ -37,6 +42,7 @@ func WithLimit(limit int) Options {
 	}}
 }
 
+// WithWhere apply where for database query
 func WithWhere(condition string, args ...interface{}) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
 		var database = db
@@ -45,6 +51,7 @@ func WithWhere(condition string, args ...interface{}) Options {
 	}}
 }
 
+// WithFilters apply filters in database query
 func WithFilters(ctx *gin.Context, filters ...Filter) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
 		var database = db
@@ -59,7 +66,7 @@ func WithFilters(ctx *gin.Context, filters ...Filter) Options {
 	}}
 }
 
-
+// WithOffset apply offset in database query
 func WithOffset(offset int) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
 		var database = db
@@ -68,6 +75,7 @@ func WithOffset(offset int) Options {
 	}}
 }
 
+// WithOrder apply ordering in database query
 func WithOrder(order string) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
 		var database = db

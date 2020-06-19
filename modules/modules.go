@@ -1,11 +1,13 @@
 package modules
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/controller"
 	"reflect"
+
+	"github.com/gin-gonic/gin"
 )
 
+// Build build struct for create ginController
 func Build(group *gin.RouterGroup, modules interface{}) {
 	var modulesType = reflect.TypeOf(modules)
 	if modulesType.Kind() == reflect.Ptr {

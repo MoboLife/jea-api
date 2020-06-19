@@ -1,25 +1,28 @@
 package api
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/environment"
 	"jea-api/models"
 	"jea-api/repository"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
+// LoginPayload payload for login
 type LoginPayload struct {
-	Username		string		`json:"username"`
-	Password		string		`json:"password"`
-	EID				string		`json:"eid"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	EID      string `json:"eid"`
 }
 
+// LoginAPI for api login
 type LoginAPI struct {
-	UserRepository		repository.Repository
+	UserRepository repository.Repository
 }
 
 func (l *LoginAPI) setupRepository(c *gin.Context) {
@@ -52,8 +55,8 @@ func (l *LoginAPI) login(c *gin.Context) {
 		return
 	}
 	token := common.GenerateToken(jwt.MapClaims{
-		"id": int64(users[0].Id),
-		"createdAt": time.Now(),
+		"id":          int64(users[0].ID),
+		"createdAt":   time.Now(),
 		"environment": loginPayload.EID,
 	})
 	tokenString, err := common.SignToken(token)
@@ -65,6 +68,7 @@ func (l *LoginAPI) login(c *gin.Context) {
 	c.JSON(200, common.JSON{"message": "Successful login", "code": "2", "token": tokenString})
 }
 
+// NewLogin create login API
 func NewLogin(group *gin.RouterGroup) {
 
 	var login = LoginAPI{}

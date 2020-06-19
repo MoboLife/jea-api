@@ -1,13 +1,15 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/database"
 	"jea-api/repository"
 	"reflect"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
+// GinController controller for models and gin
 type GinController interface {
 	FindAll(options ...repository.Options) func(ctx *gin.Context)
 	Find(options ...repository.Options) func(ctx *gin.Context)
@@ -18,17 +20,20 @@ type GinController interface {
 	SetupRepository(ctx *gin.Context)
 }
 
+// GinControllerContext context of gin controller
 type GinControllerContext struct {
-	Model			interface{}
-	ModelType		reflect.Type
-	Repository		repository.Repository
+	Model      interface{}
+	ModelType  reflect.Type
+	Repository repository.Repository
 }
 
+// SetupRepository middleware for setup repository
 func (g *GinControllerContext) SetupRepository(ctx *gin.Context) {
 	g.Repository = repository.NewRepository(g.Model, database.GetDatabase(ctx))
 }
 
-func (g *GinControllerContext) FindAll(options ...repository.Options) func(ctx *gin.Context){
+// FindAll gin router for findAll items of model
+func (g *GinControllerContext) FindAll(options ...repository.Options) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		options = append(options, repository.WithFilters(ctx, repository.LimitAndPageFilter()))
 		items, err := g.Repository.FindAll(options...)
@@ -48,6 +53,7 @@ func (g *GinControllerContext) FindAll(options ...repository.Options) func(ctx *
 	}
 }
 
+// Find gin router for find item of model
 func (g *GinControllerContext) Find(options ...repository.Options) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		var idStr = ctx.Param("id")
@@ -73,6 +79,7 @@ func (g *GinControllerContext) Find(options ...repository.Options) func(ctx *gin
 	}
 }
 
+// Create gin router for create item of model
 func (g *GinControllerContext) Create(options ...repository.Options) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		var entity = reflect.New(g.ModelType).Interface()
@@ -90,6 +97,7 @@ func (g *GinControllerContext) Create(options ...repository.Options) func(ctx *g
 	}
 }
 
+// Delete gin router for delete item of model
 func (g *GinControllerContext) Delete(options ...repository.Options) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		var idStr = ctx.Param("id")
@@ -108,6 +116,7 @@ func (g *GinControllerContext) Delete(options ...repository.Options) func(ctx *g
 
 }
 
+// Update gin router for update item of model
 func (g *GinControllerContext) Update(options ...repository.Options) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		var idStr = ctx.Param("id")
@@ -131,19 +140,22 @@ func (g *GinControllerContext) Update(options ...repository.Options) func(ctx *g
 	}
 }
 
+// Patch gin router for patch update (not implemented)
 func (g *GinControllerContext) Patch(options ...repository.Options) func(ctx *gin.Context) {
 	panic("implement me")
 }
 
+// NewGinController create gin controller
 func NewGinController(model interface{}) GinController {
 	var modelType = reflect.TypeOf(model)
 	if modelType.Kind() == reflect.Ptr {
 		modelType = modelType.Elem()
 	}
-	return &GinControllerContext{ModelType:  modelType, Model: model}
+	return &GinControllerContext{ModelType: modelType, Model: model}
 }
 
+// FindAllResponse response for more one items
 type FindAllResponse struct {
-	Items	interface{}		`json:"items"`
-	Total	int64			`json:"total"`
+	Items interface{} `json:"items"`
+	Total int64       `json:"total"`
 }

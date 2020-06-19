@@ -1,18 +1,19 @@
 package permissions
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 	"jea-api/database"
 	"jea-api/environment"
 	"jea-api/models"
 	"jea-api/repository"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 type Permissions int
 
 type UserPermission struct {
-	UserId            int64
+	UserID            int64
 	PermissionValue   int64
 	GroupsPermissions []int64
 }
@@ -71,7 +72,7 @@ func PermissionMiddleware(claims jwt.Claims, c *gin.Context) {
 		groupsValue = append(groupsValue, group.Permission)
 	}
 	userPermission := UserPermission{
-		UserId:            user.Id,
+		UserID:            user.ID,
 		PermissionValue:   user.Permissions,
 		GroupsPermissions: groupsValue,
 	}

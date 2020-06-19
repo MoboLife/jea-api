@@ -1,10 +1,12 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/modules"
+
+	"github.com/gin-gonic/gin"
 )
 
+// NewAPI setup application API
 func NewAPI(engine *gin.Engine) {
 	apiGroup := engine.Group("/api")
 	{

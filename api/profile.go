@@ -1,16 +1,18 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/models"
 	"jea-api/permissions"
 	"jea-api/repository"
+
+	"github.com/gin-gonic/gin"
 )
 
+// ProfileAPI api for profiles
 type ProfileAPI struct {
-	UserRepository 		repository.Repository
+	UserRepository repository.Repository
 }
 
 func (u *ProfileAPI) setupRepository(c *gin.Context) {
@@ -20,12 +22,12 @@ func (u *ProfileAPI) setupRepository(c *gin.Context) {
 
 func (u *ProfileAPI) user(c *gin.Context) {
 	userPermissionsItem, exists := c.Get("permissions")
-	if !exists{
+	if !exists {
 		c.Status(400)
 		return
 	}
 	userPermissions := userPermissionsItem.(*permissions.UserPermission)
-	user, err := u.UserRepository.Find(userPermissions.UserId, repository.WithPreloads("Groups"))
+	user, err := u.UserRepository.Find(userPermissions.UserID, repository.WithPreloads("Groups"))
 	if err != nil {
 		c.Status(400)
 		return
@@ -33,6 +35,7 @@ func (u *ProfileAPI) user(c *gin.Context) {
 	c.JSON(200, user)
 }
 
+// NewProfile create profile API
 func NewProfile(group *gin.RouterGroup) {
 
 	var api ProfileAPI

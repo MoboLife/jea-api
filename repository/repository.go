@@ -1,12 +1,14 @@
 package repository
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"jea-api/database"
 	"reflect"
+
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
+// Repository interface for search, create, update and delete data of models in database
 type Repository interface {
 	FindAll(options ...Options) (interface{}, error)
 	Find(id int64, options ...Options) (interface{}, error)
@@ -16,12 +18,14 @@ type Repository interface {
 	Total() (int64, error)
 }
 
+// RepositoryContext context for Repository
 type RepositoryContext struct {
-	DB			*gorm.DB
-	ModelType	reflect.Type
-	Model		interface{}
+	DB        *gorm.DB
+	ModelType reflect.Type
+	Model     interface{}
 }
 
+// FindAll findall items in database
 func (r *RepositoryContext) FindAll(options ...Options) (interface{}, error) {
 	var db = r.applyOptions(options)
 	var items = reflect.New(reflect.SliceOf(r.ModelType)).Interface()
@@ -32,6 +36,7 @@ func (r *RepositoryContext) FindAll(options ...Options) (interface{}, error) {
 	return items, nil
 }
 
+// Total get total items of search
 func (r *RepositoryContext) Total() (int64, error) {
 	var total int64
 	err := r.DB.Model(r.Model).Count(&total).Error
@@ -42,6 +47,7 @@ func (r *RepositoryContext) Total() (int64, error) {
 
 }
 
+// Find find specify registry
 func (r *RepositoryContext) Find(id int64, options ...Options) (interface{}, error) {
 	var db = r.applyOptions(options)
 	var item = reflect.New(r.ModelType).Interface()
@@ -52,6 +58,7 @@ func (r *RepositoryContext) Find(id int64, options ...Options) (interface{}, err
 	return item, nil
 }
 
+// Create create item in database
 func (r *RepositoryContext) Create(entity interface{}, options ...Options) error {
 	var db = r.applyOptions(options)
 	err := db.Create(entity).Error
@@ -61,6 +68,7 @@ func (r *RepositoryContext) Create(entity interface{}, options ...Options) error
 	return nil
 }
 
+// Delete delete item in database
 func (r *RepositoryContext) Delete(id int64, options ...Options) error {
 	var db = r.applyOptions(options)
 	err := db.Delete(r.Model, id).Error
@@ -70,6 +78,7 @@ func (r *RepositoryContext) Delete(id int64, options ...Options) error {
 	return nil
 }
 
+// Update item in database
 func (r *RepositoryContext) Update(entity interface{}, id int64, options ...Options) error {
 	var db = r.applyOptions(options)
 	err := db.Where("id = ?", id).Updates(entity).Error
@@ -79,7 +88,7 @@ func (r *RepositoryContext) Update(entity interface{}, id int64, options ...Opti
 	return nil
 }
 
-func (r *RepositoryContext) applyOptions(options []Options) *gorm.DB{
+func (r *RepositoryContext) applyOptions(options []Options) *gorm.DB {
 	var database = r.DB
 	for _, option := range options {
 		database = option.Apply(database)
@@ -87,6 +96,7 @@ func (r *RepositoryContext) applyOptions(options []Options) *gorm.DB{
 	return database
 }
 
+// NewRepository create repository
 func NewRepository(model interface{}, db *gorm.DB) Repository {
 	var modelType = reflect.TypeOf(model)
 	if modelType.Kind() == reflect.Ptr {
@@ -95,6 +105,7 @@ func NewRepository(model interface{}, db *gorm.DB) Repository {
 	return &RepositoryContext{DB: db.Model(model), Model: model, ModelType: modelType}
 }
 
+// UseRepository middleware for setup repository in gin routers
 func UseRepository(model interface{}, repository *Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		if repository == nil {

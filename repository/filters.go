@@ -2,22 +2,27 @@ package repository
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
+// Filter base filter
 type Filter interface {
 	Apply(ctx *gin.Context) []Options
 }
 
+// APIFilter api Filter builder
 type APIFilter struct {
 	ApplyFunc		func(ctx *gin.Context) []Options
 }
 
+// Apply apply filter in gin context
 func (a *APIFilter) Apply(ctx *gin.Context) []Options {
 	return a.ApplyFunc(ctx)
 }
 
+// LimitFilter filter for limit data for API
 func LimitFilter() Filter {
 	return &APIFilter{ApplyFunc: func(ctx *gin.Context) []Options {
 		var options []Options
@@ -36,6 +41,7 @@ func LimitFilter() Filter {
 	}}
 }
 
+// OrderingFilter filter for order data in API
 func OrderingFilter() Filter{
 	return &APIFilter{ApplyFunc: func(ctx *gin.Context) []Options {
 		orderStr := ctx.Query("order")
@@ -61,6 +67,7 @@ func OrderingFilter() Filter{
 	}}
 }
 
+// LimitAndPageFilter page and limit in API
 func LimitAndPageFilter() Filter {
 	return &APIFilter{ApplyFunc: func(ctx *gin.Context) []Options {
 		var options []Options

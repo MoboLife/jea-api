@@ -1,26 +1,29 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/common"
 	"jea-api/repository"
+
+	"github.com/gin-gonic/gin"
 )
 
+// MethodsOptions customize options of routers
 type MethodsOptions struct {
-	FindAll		[]repository.Options
-	Find		[]repository.Options
-	Create		[]repository.Options
-	Delete		[]repository.Options
-	Update		[]repository.Options
+	FindAll []repository.Options
+	Find    []repository.Options
+	Create  []repository.Options
+	Delete  []repository.Options
+	Update  []repository.Options
 }
 
+// NewGinControllerWrapper wrapper for ginController
 func NewGinControllerWrapper(routerGroup *gin.RouterGroup, ginController GinController, secure bool, methods ...MethodsOptions) {
 	if secure {
 		routerGroup.Use(common.AuthCheckMiddleware)
 	}
 	routerGroup.Use(ginController.SetupRepository)
 	var methodOptions MethodsOptions
-	if len(methods) >= 1{
+	if len(methods) >= 1 {
 		methodOptions = methods[0]
 	}
 	routerGroup.GET("", func(ctx *gin.Context) {

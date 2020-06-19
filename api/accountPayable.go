@@ -7,6 +7,7 @@ import (
 	"jea-api/repository"
 )
 
+// NewAccountPayable setup 
 func NewAccountPayable(group *gin.RouterGroup) {
 	var ginController = controller.NewGinController(&models.AccountPayable{})
 	var api = group.Group("/accountPayable")

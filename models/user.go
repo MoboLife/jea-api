@@ -2,20 +2,23 @@ package models
 
 import (
 	"errors"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
+// User user model
 type User struct {
 	Model
-	Name			string		`json:"name"`
-	Username		string		`json:"username"`
-	Permissions		int64		`json:"permissions"`
-	Password		string		`json:"password,omitempty" gorm:"-"`
-	Hash			string		`json:"-"`
-	Groups			[]*Group	`json:"groups,omitempty" gorm:"many2many:user_groups"`
+	Name        string   `json:"name"`
+	Username    string   `json:"username"`
+	Permissions int64    `json:"permissions"`
+	Password    string   `json:"password,omitempty" gorm:"-"`
+	Hash        string   `json:"-"`
+	Groups      []*Group `json:"groups,omitempty" gorm:"many2many:user_groups"`
 }
 
-func (u *User) BeforeSave() (err error){
+// BeforeSave gorm middleware for hash password
+func (u *User) BeforeSave() (err error) {
 	if u.Password == "" {
 		return errors.New("password is empty")
 	}

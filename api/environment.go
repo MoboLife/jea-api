@@ -1,7 +1,6 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/common"
 	"jea-api/controller"
 	"jea-api/database"
@@ -9,11 +8,14 @@ import (
 	"jea-api/models"
 	"jea-api/repository"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
+// EnvironmentAPI api for environment
 type EnvironmentAPI struct {
-	EnvironmentController	controller.EnvironmentController
-	EnvironmentRepository 	repository.Repository
+	EnvironmentController controller.EnvironmentController
+	EnvironmentRepository repository.Repository
 }
 
 func (e *EnvironmentAPI) setupRepository(c *gin.Context) {
@@ -45,19 +47,19 @@ func (e *EnvironmentAPI) createEnvironment(c *gin.Context) {
 	env := item.(*models.Environment)
 	err = e.EnvironmentController.Create(env.EID)
 	if err != nil {
-		c.JSON(400, common.JSON{"message":"Error in create environment", "error": err.Error()})
+		c.JSON(400, common.JSON{"message": "Error in create environment", "error": err.Error()})
 		return
 	}
 	env.Created = true
 	err = e.EnvironmentRepository.Update(&env, id)
 	if err != nil {
-		c.JSON(400, common.JSON{"message":"Error in update environment"})
+		c.JSON(400, common.JSON{"message": "Error in update environment"})
 		return
 	}
 	userRepository := repository.NewRepository(&models.User{}, environment.UseEnvironment(env.EID, database.GetDatabase(c)))
 	err = userRepository.Create(&user)
 	if err != nil {
-		c.JSON(400, common.JSON{"message":"Error in create user in environment"})
+		c.JSON(400, common.JSON{"message": "Error in create user in environment"})
 		return
 	}
 	c.Status(201)
@@ -78,12 +80,13 @@ func (e *EnvironmentAPI) updateEnvironment(ctx *gin.Context) {
 	env := item.(*models.Environment)
 	err = e.EnvironmentController.Update(env.EID)
 	if err != nil {
-		ctx.JSON(400, common.JSON{"message":"Error in create environment", "error": err.Error()})
+		ctx.JSON(400, common.JSON{"message": "Error in create environment", "error": err.Error()})
 		return
 	}
 	ctx.Status(200)
 }
 
+// NewEnvironment create API for environment
 func NewEnvironment(group *gin.RouterGroup) {
 	var environmentAPI = EnvironmentAPI{}
 	var routerGroup = group.Group("/environment")

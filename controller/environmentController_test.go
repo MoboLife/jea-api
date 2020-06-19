@@ -1,13 +1,15 @@
 package controller
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/lib/pq"
 	"jea-api/environment"
 	"testing"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
 )
 
 var connectionString = "host=localhost port=5432 user=postgres password=super dbname=jea sslmode=disable"
+
 func TestEnvironmentControllerExists(t *testing.T) {
 	db, err := gorm.Open("postgres", connectionString)
 	if err != nil {
@@ -28,7 +30,7 @@ func TestEnvironmentControllerCreate(t *testing.T) {
 	}
 	var environmentController = NewEnvironmentController(db)
 	err = environmentController.Create("teste")
-	if err != nil{
+	if err != nil {
 		t.Error("Error in create teste schema. Error:", err.Error())
 	}
 }
@@ -44,6 +46,3 @@ func TestEnvironmentControllerDelete(t *testing.T) {
 		t.Error("Error in delete teste schema. Error:", err.Error())
 	}
 }
-
-
-

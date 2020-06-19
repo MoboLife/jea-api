@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"jea-api/api"
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/environment"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
