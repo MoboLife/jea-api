@@ -12,6 +12,14 @@ type Purchase struct {
 	Discount		float64				`json:"discount"`
 	Increase		float64				`json:"increase"`
 	PaymentType		int					`json:"paymentType"`
+	CargoMaps		[]*CargoMap			`json:"cargoMaps,omitempty" gorm:"foreignkey:PurchaseID;association_foreignkey:ID;association_autocreate:true;association_autoupdate:false"`
+}
+
+func (p *Purchase) GetFilters() Filters {
+	return Filters {
+		CompanyFilter,
+		ClientFilter,
+	}
 }
 
 // PurchaseProduct model 

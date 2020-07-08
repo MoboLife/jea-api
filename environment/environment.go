@@ -6,12 +6,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// UseEnvironment function for use multi tenanty in database connection
+// UseEnvironment function for use multi tenancy in database connection
 func UseEnvironment(eid string, db *gorm.DB) *gorm.DB {
 	return db.Set("environment", eid)
 }
 
-// TableNameHandler resolver database name with multi tenanty
+// TableNameHandler resolver database name with multi tenancy
 func TableNameHandler(db *gorm.DB, defaultTableName string) string {
 	if envConfig, ok := db.Get("environment"); ok {
 		schema, ok := envConfig.(string)

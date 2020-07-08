@@ -1,11 +1,10 @@
 package repository
 
 import (
-	"jea-api/database"
-	"reflect"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"jea-api/database"
+	"reflect"
 )
 
 // Repository interface for search, create, update and delete data of models in database
@@ -15,7 +14,7 @@ type Repository interface {
 	Create(entity interface{}, options ...Options) error
 	Delete(id int64, options ...Options) error
 	Update(entity interface{}, id int64, options ...Options) error
-	Total() (int64, error)
+	Total([]Options) (int64, error)
 }
 
 // RepositoryContext context for Repository
@@ -37,9 +36,10 @@ func (r *RepositoryContext) FindAll(options ...Options) (interface{}, error) {
 }
 
 // Total get total items of search
-func (r *RepositoryContext) Total() (int64, error) {
+func (r *RepositoryContext) Total(modelFiltersOption []Options) (int64, error) {
+	var db = r.applyOptions(modelFiltersOption)
 	var total int64
-	err := r.DB.Model(r.Model).Count(&total).Error
+	err := db.Model(r.Model).Count(&total).Error
 	if err != nil {
 		return 0, err
 	}

@@ -13,8 +13,8 @@ func NewPurchaseAPI(group *gin.RouterGroup) {
 	var ginController = controller.NewGinController(&models.Purchase{})
 	{
 		controller.NewGinControllerWrapper(api, ginController, true, controller.MethodsOptions{
-			FindAll: []repository.Options{repository.WithPreloads("Company", "Seller", "Products", "Products.Product")},
-			Find:    []repository.Options{repository.WithPreloads("Company", "Seller", "Products", "Products.Product")},
+			FindAll: []repository.Options{repository.WithPreloads("Company", "Seller", "Products", "Products.Product", "CargoMaps", "CargoMaps.Driver")},
+			Find:    []repository.Options{repository.WithPreloads("Company", "Seller", "Products", "Products.Product", "CargoMaps", "CargoMaps.Driver")},
 		})
 	}
 }

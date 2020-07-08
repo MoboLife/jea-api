@@ -1,6 +1,7 @@
 package api
 
 import (
+	"jea-api/auth"
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/environment"
@@ -54,12 +55,12 @@ func (l *LoginAPI) login(c *gin.Context) {
 		c.JSON(200, common.JSON{"message": "Password wrong or user not exists", "code": -1})
 		return
 	}
-	token := common.GenerateToken(jwt.MapClaims{
+	token := auth.GenerateToken(jwt.MapClaims{
 		"id":          int64(users[0].ID),
 		"createdAt":   time.Now(),
 		"environment": loginPayload.EID,
 	})
-	tokenString, err := common.SignToken(token)
+	tokenString, err := auth.SignToken(token)
 	if err != nil {
 		_ = c.Error(err)
 		return

@@ -13,3 +13,13 @@ type AccountPayable struct {
 	Company        *Company  `json:"company,omitempty" gorm:"foreignkey:CompanyID;association_foreignkey:ID;association_autoupdate:false;association_autocreate:false"`
 	ValidationDate time.Time `json:"validationDate"`
 }
+
+func (a *AccountPayable) GetFilters() Filters {
+	return Filters{
+		DescriptionFilter,
+		CompanyFilter,
+		ClientFilter,
+		ValidationFilter,
+		CreatedFilter,
+	}
+}

@@ -17,6 +17,17 @@ type Sale struct {
 	PaymentType int            `json:"paymentType"`
 }
 
+func (s *Sale) GetFilters() Filters {
+	return []ModelFilter{
+		CompanyFilter,
+		CreatedFilter,
+		Filter("purchaser", "purchaser_id", false, Integer),
+		Filter("seller", "seller_id", false, Integer),
+		Filter("type", "payment_type", false, Integer),
+		Filter("status", "status", false, Integer),
+	}
+}
+
 // SaleProduct model
 type SaleProduct struct {
 	Model

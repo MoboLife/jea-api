@@ -9,3 +9,11 @@ type Environment struct {
 	StructureType string  `json:"structure_type"`
 	Created       bool    `json:"created"`
 }
+
+func (e *Environment) GetFilters() Filters {
+	return Filters {
+		ClientFilter,
+		CreatedFilter,
+		Filter("eid", "eid", false, String),
+	}
+}

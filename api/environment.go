@@ -69,12 +69,12 @@ func (e *EnvironmentAPI) updateEnvironment(ctx *gin.Context) {
 	var idStr = ctx.Param("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		ctx.Status(400)
+		common.SendError(ctx, err, 400)
 		return
 	}
 	item, err := e.EnvironmentRepository.Find(id)
 	if err != nil {
-		ctx.Status(404)
+		common.SendError(ctx, err, 404)
 		return
 	}
 	env := item.(*models.Environment)

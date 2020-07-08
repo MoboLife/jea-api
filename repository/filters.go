@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"jea-api/common"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func LimitFilter() Filter {
 		if limitStr := ctx.Query("limit"); limitStr != "" {
 			limit, err := strconv.ParseInt(limitStr, 10, 64)
 			if err != nil {
-				ctx.Status(400)
+				common.SendError(ctx, err, 400)
 				return options
 			}
 			if limit > 20 {

@@ -20,5 +20,8 @@ func NewAPI(engine *gin.Engine) {
 		NewAccountReceivable(apiGroup)
 		NewSessionAPI(apiGroup)
 		NewPurchaseAPI(apiGroup)
+		NewPerformanceAPI(apiGroup)
+		NewProductAPI(apiGroup)
+		NewCarRentalAPI(apiGroup)
 	}
 }

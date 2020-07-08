@@ -17,6 +17,12 @@ type User struct {
 	Groups      []*Group `json:"groups,omitempty" gorm:"many2many:user_groups"`
 }
 
+func (u *User) GetFilters() Filters {
+	return Filters {
+		Filter("username", "username", false, Equal),
+	}
+}
+
 // BeforeSave gorm middleware for hash password
 func (u *User) BeforeSave() (err error) {
 	if u.Password == "" {

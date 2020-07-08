@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
@@ -8,6 +9,13 @@ import (
 // Options base options for apply mutable data in database connection
 type Options interface {
 	Apply(db *gorm.DB) *gorm.DB
+}
+
+func UseOptions(db *gorm.DB, options ...Options) *gorm.DB {
+	for _, option := range options {
+		db = option.Apply(db)
+	}
+	return db
 }
 
 // DatabaseOptions database options builder
@@ -45,9 +53,7 @@ func WithLimit(limit int) Options {
 // WithWhere apply where for database query
 func WithWhere(condition string, args ...interface{}) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
-		var database = db
-		database = db.Where(condition, args)
-		return database
+		return db.Where(condition, args)
 	}}
 }
 
@@ -80,6 +86,19 @@ func WithOrder(order string) Options {
 	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
 		var database = db
 		database = database.Order(order)
+		return database
+	}}
+}
+
+type FilterFields map[string][]interface{}
+
+// WithFields apply filters in
+func WithFields(fields FilterFields) Options {
+	return &DatabaseOptions{ApplyFunc: func(db *gorm.DB) *gorm.DB {
+		var database = db
+		for key, value := range fields {
+			database = database.Where(fmt.Sprintf("%s", key), value...)
+		}
 		return database
 	}}
 }

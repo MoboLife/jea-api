@@ -1,7 +1,7 @@
 package api
 
 import (
-	"jea-api/common"
+	"jea-api/auth"
 	"jea-api/database"
 	"jea-api/models"
 	"jea-api/permissions"
@@ -41,7 +41,7 @@ func NewProfile(group *gin.RouterGroup) {
 	var api ProfileAPI
 	var apiGroup = group.Group("/profile")
 	{
-		apiGroup.Use(common.AuthCheckMiddleware)
+		apiGroup.Use(auth.AuthCheckMiddleware)
 		apiGroup.Use(api.setupRepository)
 		apiGroup.GET("", api.user)
 	}

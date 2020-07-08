@@ -33,3 +33,10 @@ type Session struct {
 	Version  string           `json:"version"`
 	Type     SessionType      `json:"type"`
 }
+
+func (s *Session) GetFilters() Filters {
+	return Filters {
+		Filter("user", "user_id", false, Integer),
+		Filter("token", "token", false, Equal),
+	}
+}

@@ -1,7 +1,8 @@
-package common
+package auth
 
 import (
 	"errors"
+	"jea-api/common"
 	"jea-api/permissions"
 
 	"github.com/dgrijalva/jwt-go"
@@ -39,13 +40,13 @@ func AuthCheckMiddleware(c *gin.Context) {
 		tokenString = c.GetHeader("Authorization")
 	}
 	if tokenString == "" {
-		c.JSON(401, JSON{"message": "Token not found", "code": 9})
+		c.JSON(401, common.JSON{"message": "Token not found", "code": 9})
 		c.Abort()
 		return
 	}
 	token, err := ValidateToken(tokenString)
 	if err != nil || !token.Valid {
-		c.JSON(401, JSON{"message": "Invalid token", "code": 8})
+		c.JSON(401, common.JSON{"message": "Invalid token", "code": 8})
 		c.Abort()
 		return
 	}

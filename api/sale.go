@@ -1,6 +1,7 @@
 package api
 
 import (
+	"jea-api/common"
 	"jea-api/controller"
 	"jea-api/database"
 	"jea-api/models"
@@ -25,13 +26,13 @@ func (s *SaleAPI) findProducts(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		ctx.Status(400)
+		common.SendError(ctx, err, 400)
 		return
 	}
 	saleItems, err := s.SaleRepository.Find(id, repository.WithPreloads("Purchaser", "Products", "Company"), repository.WithFilters(ctx, repository.LimitAndPageFilter()))
 	sale := saleItems.(*models.Sale)
 	if err != nil {
-		ctx.Status(404)
+		common.SendError(ctx, err, 404)
 		return
 	}
 	ctx.JSON(200, sale.Products)
