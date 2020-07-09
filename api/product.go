@@ -12,7 +12,7 @@ func NewProductAPI(router *gin.RouterGroup) {
 	{
 		var ginController = controller.NewGinController(&models.Product{})
 		controller.NewGinControllerWrapper(api, ginController, true, controller.MethodsOptions{
-			FindAll: []repository.Options{repository.WithPreloads("Stock", "StockTransfers", "ProductGroup")},
+			FindAll: []repository.Options{repository.WithPreloads("Stock", "Stock.Company", "StockTransfers", "StockTransfers.To", "StockTransfers.From", "ProductGroup")},
 		})
 	}
 }
