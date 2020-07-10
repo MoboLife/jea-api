@@ -6,6 +6,7 @@ type Employer struct {
 	Name 		string 		`json:"name"`
 	CPF			string		`json:"cpf"`
 	RG			string		`json:"rg"`
+	Type		int			`json:"type"`
 	Address
 }
 
