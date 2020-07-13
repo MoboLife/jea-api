@@ -24,6 +24,5 @@ func NewEmployerAPI(router *gin.RouterGroup) {
 			FindAll: []repository.Options{repository.WithPreloads("Sales")},
 			Find: []repository.Options{repository.WithPreloads("Sales")},
 		})
-		api.GET("/sales", employer.EmployerSales)
 	}
 }
