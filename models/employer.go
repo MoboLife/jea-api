@@ -8,9 +8,10 @@ type Employer struct {
 	RG			string		`json:"rg"`
 	Type		int			`json:"type"`
 	Address
+	Sales		[]*Sale		`json:"sales,omitempty" gorm:"foreignkey:SellerID;association_foreignkey:ID;association_autocreate:false;association_autoupdate:false"`
 }
 
-func (e *Employer) GetFilters() []ModelFilter {
+func (e *Employer) GetFilters() Filters {
 	return Filters {
 		CreatedFilter,
 		Filter("name", "name", false, String),

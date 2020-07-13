@@ -8,5 +8,4 @@ type Modules struct {
 	Client  	models.Client  	`router:"/clients"`
 	User    	models.User    	`router:"/users"`
 	Group   	models.Group   	`router:"/groups"`
-	Employer 	models.Employer	`router:"/employers"`
 }
