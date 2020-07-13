@@ -11,12 +11,8 @@ type EmployerAPI struct {
 
 }
 
-func (e *EmployerAPI) EmployerSales(ctx *gin.Context) {
-
-}
 
 func NewEmployerAPI(router *gin.RouterGroup) {
-	var employer EmployerAPI
 	var api = router.Group("/employers")
 	var ginController = controller.NewGinController(&models.Employer{})
 	{
