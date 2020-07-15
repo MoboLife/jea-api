@@ -7,11 +7,6 @@ import (
 	"jea-api/repository"
 )
 
-type EmployerAPI struct {
-
-}
-
-
 func NewEmployerAPI(router *gin.RouterGroup) {
 	var api = router.Group("/employers")
 	var ginController = controller.NewGinController(&models.Employer{})

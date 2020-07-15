@@ -24,5 +24,6 @@ func NewAPI(engine *gin.Engine) {
 		NewProductAPI(apiGroup)
 		NewCarRentalAPI(apiGroup)
 		NewEmployerAPI(apiGroup)
+		NewReportAPI(apiGroup)
 	}
 }
