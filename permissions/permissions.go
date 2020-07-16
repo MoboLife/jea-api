@@ -19,18 +19,18 @@ type UserPermission struct {
 }
 
 func (u *UserPermission) SetPermission(permissions Permissions) {
-	u.PermissionValue = int64(SetBit(uint64(u.PermissionValue), int(permissions)))
+	u.PermissionValue = int64(SetBit(uint64(u.PermissionValue), uint64(permissions)))
 }
 
 func (u *UserPermission) HasPermission(permissions Permissions) bool {
 	var hasOnGroup bool
 	for _, groupPermission := range u.GroupsPermissions {
-		hasOnGroup = GetBit(uint64(groupPermission), int(permissions))
+		hasOnGroup = GetBit(uint64(groupPermission), uint64(permissions))
 		if hasOnGroup {
 			break
 		}
 	}
-	return GetBit(uint64(u.PermissionValue), int(permissions)) || hasOnGroup
+	return GetBit(uint64(u.PermissionValue), uint64(permissions)) || hasOnGroup
 }
 
 var (
@@ -43,11 +43,11 @@ var (
 	GroupDelete       Permissions = 8
 )
 
-func GetBit(bits uint64, bitPosition int) bool {
+func GetBit(bits uint64, bitPosition uint64) bool {
 	return (bits & (1 << bitPosition)) != 0
 }
 
-func SetBit(bits uint64, bitPosition int) uint64 {
+func SetBit(bits uint64, bitPosition uint64) uint64 {
 	bits |= 1 << bitPosition
 	return bits
 }
