@@ -3,7 +3,7 @@ module jea-api
 go 1.14
 
 require (
-	github.com/VitorEmanoel/menv v1.0.1
+	github.com/VitorEmanoel/menv v1.0.2
 	github.com/cosmtrek/air v1.12.1 // indirect
 	github.com/creack/pty v1.1.11 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
