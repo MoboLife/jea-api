@@ -1,17 +1,12 @@
-package api
+package report
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"jea-api/auth"
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/models"
 )
-
-type ReportAPI struct {
-
-}
 
 type BestSeller struct {
 	SellerId		int64				`json:"sellerId" db:"seller_id"`
@@ -20,10 +15,9 @@ type BestSeller struct {
 	Seller			*models.Employer	`json:"seller,omitempty"`
 }
 
-func (r *ReportAPI) BestSellers(c *gin.Context) {
+func BestSellers(c *gin.Context) {
 	var db = database.GetDatabase(c)
 	var bestSellers []*BestSeller
-	db.LogMode(true)
 	err := db.Model(&models.Sale{}).Select("seller_id, sum(total) as sales_total, count(seller_id) as sales_count").Where("seller_id IS NOT NULL").Group("seller_id").Order("sales_total desc").Limit(10).Scan(&bestSellers).Error
 	if err != nil {
 		common.SendError(c, err, 500)
@@ -40,12 +34,6 @@ func (r *ReportAPI) BestSellers(c *gin.Context) {
 	c.JSON(200, bestSellers)
 }
 
-
-func NewReportAPI(router *gin.RouterGroup) {
-	var report = ReportAPI{}
-	var api = router.Group("/reports")
-	{
-		api.Use(auth.AuthCheckMiddleware)
-		api.GET("/bestsellers", report.BestSellers)
-	}
+func NewBestSellerReport(router *gin.RouterGroup ) {
+	router.GET("/bestsellers", BestSellers)
 }

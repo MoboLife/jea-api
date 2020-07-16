@@ -1,6 +1,7 @@
 package api
 
 import (
+	"jea-api/api/report"
 	"jea-api/modules"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,6 @@ func NewAPI(engine *gin.Engine) {
 		NewProductAPI(apiGroup)
 		NewCarRentalAPI(apiGroup)
 		NewEmployerAPI(apiGroup)
-		NewReportAPI(apiGroup)
+		report.NewReport(apiGroup)
 	}
 }
