@@ -19,6 +19,7 @@ func main() {
 		User:     environmentManager.DatabaseUser,
 		Database: environmentManager.DatabaseDatabase,
 		Password: environmentManager.DatabasePassword,
+		URL:	  environmentManager.DatabaseURL,
 		Driver:   "postgres",
 	}, true)
 	if err != nil {
