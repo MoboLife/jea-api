@@ -11,6 +11,7 @@ type Environment struct {
 	DatabaseUser		string		`name:"DATABASE_USER"`
 	DatabasePassword	string		`name:"DATABASE_PASSWORD"`
 	DatabaseDatabase	string		`name:"DATABASE_DATABASE"`
+	DatabaseURL			string		`name:"DATABASE_URL"`
 }
 
 func LoadEnvironment() Environment {

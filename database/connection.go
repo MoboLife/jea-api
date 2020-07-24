@@ -8,5 +8,6 @@ type ConnectionInfo struct {
 	Database 		string		`json:"database"`
 	Password 		string		`json:"password"`
 	Driver			string		`json:"driver"`
+	URL				string		`json:"url"`
 }
 
