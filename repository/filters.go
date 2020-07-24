@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"jea-api/common"
 	"strconv"
 
@@ -96,4 +97,18 @@ func LimitAndPageFilter() Filter {
 		}
 		return options
 	}}
+}
+
+type Filters []Filter
+
+func (f Filters) Apply(ctx *gin.Context, db *gorm.DB) *gorm.DB {
+	var options []Options
+	var database *gorm.DB
+	for _, filter := range f {
+		options = append(options, filter.Apply(ctx)...)
+	}
+	for _, option := range options {
+		database = option.Apply(db)
+	}
+	return database
 }

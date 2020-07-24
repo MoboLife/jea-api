@@ -19,7 +19,7 @@ func NewDatabase(info ConnectionInfo, schemaResolver bool) (*gorm.DB, error) {
 	if schemaResolver {
 		gorm.DefaultTableNameHandler = environment.TableNameHandler
 	}
-	db, err := gorm.Open(info.Driver, fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", info.Host, info.Port, info.User, info.Database, info.Password))
+	db, err := gorm.Open(info.Driver, fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", info.Host, info.Port, info.User, info.Database, info.Password))
 	if err != nil {
 		return nil, err
 	}

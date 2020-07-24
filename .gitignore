@@ -3,3 +3,5 @@ postgres_data/
 backup/
 tmp/
 jea-api.exe
+.vscode/ 
+

@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"jea-api/api"
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/environment"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -22,6 +23,7 @@ func main() {
 	}, true)
 	if err != nil {
 		logrus.WithField("error", err.Error()).Panic("Error in connect with database")
+		return
 	}
 	engine.Use(common.CORS())
 	engine.Use(database.UseDatabase(db))

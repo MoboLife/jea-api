@@ -6,6 +6,7 @@ import (
 	"jea-api/common"
 	"jea-api/database"
 	"jea-api/models"
+	"jea-api/repository"
 )
 
 type BestSeller struct {
@@ -15,25 +16,35 @@ type BestSeller struct {
 	Seller			*models.Employer	`json:"seller,omitempty"`
 }
 
-func BestSellers(c *gin.Context) {
-	var db = database.GetDatabase(c)
-	var bestSellers []*BestSeller
-	err := db.Model(&models.Sale{}).Select("seller_id, sum(total) as sales_total, count(seller_id) as sales_count").Where("seller_id IS NOT NULL").Group("seller_id").Order("sales_total desc").Limit(10).Scan(&bestSellers).Error
-	if err != nil {
-		common.SendError(c, err, 500)
-		return
-	}
-	for _, seller := range bestSellers {
-		seller.Seller = &models.Employer{}
-		err = db.First(seller.Seller, seller.SellerId).Error
-		if err != nil && err != gorm.ErrRecordNotFound {
+func BestSellers(filters repository.Filters) func (c *gin.Context) {
+	return func(c *gin.Context) {
+		var db = filters.Apply(c, database.GetDatabase(c))
+		var bestSellers []*BestSeller
+		err := db.Model(&models.Sale{}).Select("seller_id, sum(total) as sales_total, count(seller_id) as sales_count").Where("seller_id IS NOT NULL").Group("seller_id").Order("sales_total desc").Limit(10).Scan(&bestSellers).Error
+		if err != nil {
 			common.SendError(c, err, 500)
 			return
 		}
+		for _, seller := range bestSellers {
+			seller.Seller = &models.Employer{}
+			err = db.First(seller.Seller, seller.SellerId).Error
+			if err != nil && err != gorm.ErrRecordNotFound {
+				common.SendError(c, err, 500)
+				return
+			}
+		}
+		c.JSON(200, bestSellers)
 	}
-	c.JSON(200, bestSellers)
+}
+
+var BestSellersFilters = []models.ModelFilter {
+	models.CreatedFilter,
 }
 
 func NewBestSellerReport(router *gin.RouterGroup ) {
-	router.GET("/bestsellers", BestSellers)
+	router.GET("/bestsellers", BestSellers(
+		repository.Filters{
+			repository.UseFilters(BestSellersFilters),
+		}),
+	)
 }
